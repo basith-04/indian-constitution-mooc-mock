@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Constitution of India — Mock Test</title>
+<style>
+:root{
+  --bg:#f5f3ee; --card:#fffdf8; --ink:#1f2421; --muted:#68706b;
+  --line:#dcd8cf; --accent:#1f5b4a; --accent2:#e7efe9;
+  --good:#237a4b; --goodbg:#eaf6ee; --bad:#a83c35; --badbg:#fbeceb;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+button{font:inherit}
+.container{width:min(920px,calc(100% - 32px));margin:auto}
+header{padding:48px 0 30px;border-bottom:1px solid var(--line)}
+.kicker{font-size:12px;font-weight:800;letter-spacing:.13em;text-transform:uppercase;color:var(--accent)}
+h1{font-family:Georgia,serif;font-size:clamp(34px,6vw,60px);line-height:.98;margin:12px 0}
+.subtitle{color:var(--muted);font-size:16px;max-width:650px;line-height:1.6}
+.screen{padding:34px 0 70px}
+.modes{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;margin-top:24px}
+.mode{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:25px;text-align:left;cursor:pointer;transition:.18s}
+.mode:hover{transform:translateY(-2px);border-color:var(--accent)}
+.mode h2{font-family:Georgia,serif;margin:0 0 8px;font-size:25px}
+.mode p{color:var(--muted);line-height:1.5;margin:0}
+.batch-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:22px}
+.batch-btn{background:var(--card);border:1px solid var(--line);padding:18px;border-radius:14px;text-align:left;cursor:pointer}
+.batch-btn:hover{border-color:var(--accent);background:#fafbf8}
+.batch-btn strong{display:block;font-size:17px;margin-bottom:4px}
+.batch-btn span{font-size:13px;color:var(--muted)}
+.topbar{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:18px}
+.progress-wrap{height:7px;background:#e2dfd6;border-radius:20px;overflow:hidden}
+.progress{height:100%;background:var(--accent);width:0;transition:.25s}
+.meta{display:flex;justify-content:space-between;color:var(--muted);font-size:13px;margin:9px 0 26px}
+.question-card{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:30px}
+.qnum{font-size:12px;font-weight:800;letter-spacing:.08em;color:var(--accent);text-transform:uppercase}
+.question{font-family:Georgia,serif;font-size:clamp(23px,3vw,31px);line-height:1.25;margin:12px 0 25px}
+.options{display:grid;gap:11px}
+.option{border:1px solid var(--line);background:#fffefa;border-radius:13px;padding:15px 16px;text-align:left;cursor:pointer;display:flex;gap:12px;align-items:flex-start;transition:.15s}
+.option:hover:not(:disabled){border-color:var(--accent);background:#f8faf7}
+.option .letter{width:27px;height:27px;min-width:27px;border-radius:50%;background:#eeece5;display:grid;place-items:center;font-size:12px;font-weight:800}
+.option.selected-correct{border-color:var(--good);background:var(--goodbg)}
+.option.selected-correct .letter{background:var(--good);color:white}
+.option.selected-wrong{border-color:var(--bad);background:var(--badbg)}
+.option.selected-wrong .letter{background:var(--bad);color:white}
+.option.reveal-correct{border-color:var(--good);background:var(--goodbg)}
+.feedback{margin-top:18px;padding:15px 16px;border-radius:13px;line-height:1.5;font-size:14px}
+.feedback.good{background:var(--goodbg);color:#185b38}
+.feedback.bad{background:var(--badbg);color:#7e2d28}
+.controls{display:flex;justify-content:space-between;gap:10px;margin-top:18px}
+.btn{border:1px solid var(--line);background:var(--card);padding:11px 16px;border-radius:11px;cursor:pointer;font-weight:700}
+.btn.primary{background:var(--accent);color:white;border-color:var(--accent)}
+.btn:disabled{opacity:.4;cursor:not-allowed}
+.score{text-align:center;background:var(--card);border:1px solid var(--line);border-radius:20px;padding:40px 25px}
+.score-number{font:700 72px Georgia,serif;color:var(--accent)}
+.score p{color:var(--muted)}
+.breakdown{margin:25px auto 0;max-width:500px;text-align:left}
+.breakdown div{display:flex;justify-content:space-between;border-bottom:1px solid var(--line);padding:11px 0}
+.hidden{display:none!important}
+.back{border:none;background:none;color:var(--muted);cursor:pointer;padding:0;margin-bottom:20px}
+footer{text-align:center;color:var(--muted);font-size:13px;padding:20px 0 35px}
+@media(max-width:650px){
+ .modes{grid-template-columns:1fr}.batch-grid{grid-template-columns:1fr 1fr}
+ .question-card{padding:21px}.question{font-size:24px}
+}
+</style>
+</head>
+<body>
+<div class="container">
+<header>
+  <div class="kicker">Exam Practice</div>
+  <h1>Constitution of India</h1>
+  <div class="subtitle">150-question practice set. Choose a batch or take a 50-question random mock from the complete question bank.</div>
+</header>
+
+<main class="screen">
+  <section id="home">
+    <div class="modes">
+      <button class="mode" onclick="showBatches()">
+        <h2>Batch-by-batch</h2>
+        <p>Practice 30 questions at a time. Five batches cover all 150 questions.</p>
+      </button>
+      <button class="mode" onclick="startOverall()">
+        <h2>Overall Mock</h2>
+        <p>Get 50 questions selected randomly from the complete 150-question bank.</p>
+      </button>
+    </div>
+  </section>
+
+  <section id="batches" class="hidden">
+    <button class="back" onclick="goHome()">← Back</button>
+    <h2>Choose a batch</h2>
+    <div class="batch-grid">
+      <button class="batch-btn" onclick="startBatch(1)"><strong>Batch 1</strong><span>Questions 1–30</span></button>
+      <button class="batch-btn" onclick="startBatch(2)"><strong>Batch 2</strong><span>Questions 31–60</span></button>
+      <button class="batch-btn" onclick="startBatch(3)"><strong>Batch 3</strong><span>Questions 61–90</span></button>
+      <button class="batch-btn" onclick="startBatch(4)"><strong>Batch 4</strong><span>Questions 91–120</span></button>
+      <button class="batch-btn" onclick="startBatch(5)"><strong>Batch 5</strong><span>Questions 121–150</span></button>
+    </div>
+  </section>
+
+  <section id="quiz" class="hidden">
+    <button class="back" onclick="goHome()">← Exit test</button>
+    <div class="topbar">
+      <strong id="modeTitle"></strong>
+      <span id="scoreLive"></span>
+    </div>
+    <div class="progress-wrap"><div class="progress" id="progress"></div></div>
+    <div class="meta"><span id="counter"></span><span>Answer is revealed immediately</span></div>
+
+    <div class="question-card">
+      <div class="qnum" id="qnum"></div>
+      <div class="question" id="question"></div>
+      <div class="options" id="options"></div>
+      <div id="feedback"></div>
+    </div>
+    <div class="controls">
+      <button class="btn" id="prevBtn" onclick="prevQuestion()">← Previous</button>
+      <button class="btn primary" id="nextBtn" onclick="nextQuestion()">Next →</button>
+    </div>
+  </section>
+
+  <section id="result" class="hidden">
+    <button class="back" onclick="goHome()">← Back to home</button>
+    <div class="score">
+      <div class="kicker">Test complete</div>
+      <div class="score-number" id="finalScore"></div>
+      <h2 id="resultTitle"></h2>
+      <p id="resultText"></p>
+      <div class="breakdown">
+        <div><span>Correct</span><strong id="correctCount"></strong></div>
+        <div><span>Wrong</span><strong id="wrongCount"></strong></div>
+        <div><span>Unanswered</span><strong id="skipCount"></strong></div>
+        <div><span>Total</span><strong id="totalCount"></strong></div>
+      </div>
+      <div style="margin-top:25px;display:flex;gap:10px;justify-content:center;flex-wrap:wrap">
+        <button class="btn primary" onclick="restartSame()">Retry</button>
+        <button class="btn" onclick="goHome()">Home</button>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>Constitution of India Mock Test · by Basith</footer>
+</div>
+
+<script>
+const BANK = [{"batch": 1, "q": "Who is regarded as the 'Father of the Indian Constitution'?", "options": ["Jawaharlal Nehru", "Dr. B. R. Ambedkar", "Rajendra Prasad", "Sardar Patel"], "answer": 1}, {"batch": 1, "q": "The Constituent Assembly of India was formed under which plan?", "options": ["Wavell Plan", "Cripps Mission", "Cabinet Mission Plan, 1946", "Mountbatten Plan"], "answer": 2}, {"batch": 1, "q": "On which date did the Constitution of India come into force?", "options": ["15 August 1947", "26 November 1949", "26 January 1950", "2 October 1950"], "answer": 2}, {"batch": 1, "q": "On which date was the Constitution of India adopted by the Constituent Assembly?", "options": ["15 August 1947", "26 November 1949", "26 January 1950", "1 January 1950"], "answer": 1}, {"batch": 1, "q": "Who was the Chairman of the Drafting Committee of the Constituent Assembly?", "options": ["Dr. Rajendra Prasad", "Dr. B. R. Ambedkar", "Jawaharlal Nehru", "K. M. Munshi"], "answer": 1}, {"batch": 1, "q": "Who was the President of the Constituent Assembly?", "options": ["Dr. B. R. Ambedkar", "Dr. Rajendra Prasad", "Jawaharlal Nehru", "C. Rajagopalachari"], "answer": 1}, {"batch": 1, "q": "Fundamental Rights are enshrined in which Part of the Indian Constitution?", "options": ["Part II", "Part III", "Part IV", "Part V"], "answer": 1}, {"batch": 1, "q": "Fundamental Rights are covered under which Articles?", "options": ["Articles 12 to 35", "Articles 36 to 51", "Articles 1 to 11", "Articles 52 to 78"], "answer": 0}, {"batch": 1, "q": "The definition of 'State' for the purpose of Fundamental Rights is given in which Article?", "options": ["Article 12", "Article 13", "Article 14", "Article 19"], "answer": 0}, {"batch": 1, "q": "Which Article declares that laws inconsistent with Fundamental Rights shall be void?", "options": ["Article 12", "Article 13", "Article 14", "Article 32"], "answer": 1}, {"batch": 1, "q": "The Right to Equality is guaranteed under which Articles?", "options": ["Articles 14 to 18", "Articles 19 to 22", "Articles 23 to 24", "Articles 25 to 28"], "answer": 0}, {"batch": 1, "q": "Article 14 of the Constitution guarantees:", "options": ["Right to freedom of speech", "Equality before law and equal protection of laws", "Right to education", "Right against exploitation"], "answer": 1}, {"batch": 1, "q": "The executive power of the Union is vested in the:", "options": ["Prime Minister", "President", "Council of Ministers", "Parliament"], "answer": 1}, {"batch": 1, "q": "The President of India is elected by an Electoral College consisting of:", "options": ["Elected members of both Houses of Parliament and elected members of State Legislative Assemblies", "Only Members of Parliament", "Only State Legislative Assembly members", "The Council of Ministers"], "answer": 0}, {"batch": 1, "q": "The manner/election of the President is provided under which Article?", "options": ["Article 54", "Article 61", "Article 72", "Article 79"], "answer": 0}, {"batch": 1, "q": "What is the term of office of the President of India?", "options": ["4 years", "5 years", "6 years", "7 years"], "answer": 1}, {"batch": 1, "q": "The minimum age required to be eligible for election as President of India is:", "options": ["25 years", "30 years", "35 years", "40 years"], "answer": 2}, {"batch": 1, "q": "The impeachment of the President for violation of the Constitution is provided under which Article?", "options": ["Article 61", "Article 72", "Article 76", "Article 74"], "answer": 0}, {"batch": 1, "q": "The executive power of a State is vested in the:", "options": ["Chief Minister", "Governor", "Council of Ministers", "State Legislature"], "answer": 1}, {"batch": 1, "q": "The Governor of a State is appointed by:", "options": ["The President", "The Prime Minister", "The Chief Minister", "The people of the State"], "answer": 0}, {"batch": 1, "q": "The minimum age required to be eligible to become a Governor is:", "options": ["25 years", "30 years", "35 years", "40 years"], "answer": 2}, {"batch": 1, "q": "The normal term of office of a Governor is:", "options": ["4 years", "5 years, subject to the pleasure of the President", "6 years", "Life tenure"], "answer": 1}, {"batch": 1, "q": "Article 163 of the Constitution provides for a Council of Ministers to aid and advise the:", "options": ["Governor", "President", "Chief Justice of High Court", "Speaker of the Assembly"], "answer": 0}, {"batch": 1, "q": "The Chief Minister of a State is appointed by:", "options": ["The Governor", "The President", "The Speaker", "The Chief Justice of the High Court"], "answer": 0}, {"batch": 1, "q": "Legislative relations between the Union and States are dealt with under which Part?", "options": ["Part XI", "Part XII", "Part XIII", "Part XIV"], "answer": 0}, {"batch": 1, "q": "The distribution of legislative powers between Union and States is based on:", "options": ["Union List, State List and Concurrent List", "Only a single combined list", "Union List only", "Residuary powers with the States only"], "answer": 0}, {"batch": 1, "q": "In case of a conflict between a Union law and a State law on a subject in the Concurrent List, generally:", "options": ["The State law prevails always", "The Union law prevails, subject to certain exceptions", "Both laws become void", "The matter goes to the Governor"], "answer": 1}, {"batch": 1, "q": "Residuary powers of legislation rest with:", "options": ["The States", "The Union Parliament", "Local bodies", "The Judiciary"], "answer": 1}, {"batch": 1, "q": "Administrative relations between the Union and States are provided under which Part?", "options": ["Part XI", "Part XII", "Part XIII", "Part XIV"], "answer": 0}, {"batch": 1, "q": "Under administrative relations, the Union can give directions to States regarding:", "options": ["Construction and maintenance of means of communication of national importance", "Selection of the Chief Minister", "Formation of political parties", "State budget preparation"], "answer": 0}, {"batch": 2, "q": "The Indian Constitution is often described as 'borrowed' because it draws features from various countries; this makes it a:", "options": ["Rigid document", "Bag of borrowings", "Unitary document only", "Unwritten constitution"], "answer": 1}, {"batch": 2, "q": "Which of the following best describes the Indian Constitution in terms of length?", "options": ["Shortest written constitution in the world", "One of the lengthiest written constitutions in the world", "An unwritten constitution", "A purely oral tradition"], "answer": 1}, {"batch": 2, "q": "The Indian Constitution is:", "options": ["Purely federal", "Purely unitary", "Federal in form and unitary in spirit (quasi-federal)", "Confederal"], "answer": 2}, {"batch": 2, "q": "Which feature of the Indian Constitution provides for a single, integrated judicial system?", "options": ["Dual judiciary", "Single integrated judiciary", "No judiciary", "Separate judiciary for each state"], "answer": 1}, {"batch": 2, "q": "India has a Parliamentary form of government at the Centre, modeled on the:", "options": ["American system", "British system", "French system", "Swiss system"], "answer": 1}, {"batch": 2, "q": "The concept of 'Rule of Law' in the Indian Constitution was borrowed from:", "options": ["USA", "Ireland", "Britain", "Canada"], "answer": 2}, {"batch": 2, "q": "Article 15 prohibits discrimination on grounds of:", "options": ["Religion, race, caste, sex or place of birth", "Property only", "Political opinion only", "Age only"], "answer": 0}, {"batch": 2, "q": "Article 16 guarantees equality of opportunity in matters of:", "options": ["Public employment", "Marriage", "Religion", "Education only"], "answer": 0}, {"batch": 2, "q": "Article 17 of the Constitution deals with:", "options": ["Abolition of Untouchability", "Abolition of Titles", "Right to Property", "Freedom of Press"], "answer": 0}, {"batch": 2, "q": "Article 18 of the Constitution deals with:", "options": ["Abolition of Untouchability", "Abolition of Titles", "Right to Equality before law", "Right to freedom of religion"], "answer": 1}, {"batch": 2, "q": "The Right to Freedom is guaranteed under which Articles?", "options": ["Articles 19 to 22", "Articles 23 to 24", "Articles 25 to 28", "Articles 29 to 30"], "answer": 0}, {"batch": 2, "q": "Article 19 of the Constitution guarantees how many fundamental freedoms?", "options": ["Four", "Five", "Six", "Seven"], "answer": 2}, {"batch": 2, "q": "The Vice President of India acts as ex-officio Chairman of which body?", "options": ["Lok Sabha", "Rajya Sabha", "Supreme Court", "Planning Commission"], "answer": 1}, {"batch": 2, "q": "The Vice President is elected by:", "options": ["Members of both Houses of Parliament", "Members of Rajya Sabha only", "The Electoral College including State Assemblies", "The President alone"], "answer": 0}, {"batch": 2, "q": "What is the term of office of the Vice President of India?", "options": ["4 years", "5 years", "6 years", "No fixed term"], "answer": 1}, {"batch": 2, "q": "Article 74 of the Constitution provides for a Council of Ministers to:", "options": ["Aid and advise the President", "Aid and advise the Governor", "Assist the Chief Justice", "Assist the Speaker"], "answer": 0}, {"batch": 2, "q": "The Council of Ministers is collectively responsible to:", "options": ["The President", "The Rajya Sabha", "The Lok Sabha (House of the People)", "The Supreme Court"], "answer": 2}, {"batch": 2, "q": "The Prime Minister of India is appointed by:", "options": ["The President", "The Chief Justice", "The Speaker of Lok Sabha", "The Rajya Sabha Chairman"], "answer": 0}, {"batch": 2, "q": "The Council of Ministers in a State is collectively responsible to:", "options": ["The Governor", "The Legislative Assembly", "The President", "The High Court"], "answer": 1}, {"batch": 2, "q": "The highest law officer of a State, who advises the State Government on legal matters, is the:", "options": ["Attorney General", "Advocate General", "Solicitor General", "Chief Justice"], "answer": 1}, {"batch": 2, "q": "The Advocate General of a State is appointed under which Article?", "options": ["Article 165", "Article 76", "Article 124", "Article 214"], "answer": 0}, {"batch": 2, "q": "The Advocate General holds office during the pleasure of the:", "options": ["Governor", "President", "Chief Minister", "Chief Justice"], "answer": 0}, {"batch": 2, "q": "Union Territories are administered by the President through an Administrator, who may be designated as:", "options": ["Lieutenant Governor or Administrator", "Chief Minister", "Governor only", "Prime Minister's nominee"], "answer": 0}, {"batch": 2, "q": "Which Article of the Constitution provides for the administration of Union Territories?", "options": ["Article 239", "Article 1", "Article 3", "Article 240"], "answer": 0}, {"batch": 2, "q": "The Inter-State Council is established under which Article?", "options": ["Article 263", "Article 280", "Article 268", "Article 2"], "answer": 0}, {"batch": 2, "q": "The Inter-State Council's main function is to:", "options": ["Prepare the Union Budget", "Inquire into and advise on disputes between States", "Appoint Governors", "Conduct elections"], "answer": 1}, {"batch": 2, "q": "Financial relations between the Union and States are dealt with under which Part?", "options": ["Part XII", "Part X", "Part XI", "Part XIII"], "answer": 0}, {"batch": 2, "q": "The Finance Commission is constituted under which Article?", "options": ["Article 280", "Article 281", "Article 20", "Article 263"], "answer": 0}, {"batch": 2, "q": "The Finance Commission is constituted by the President every:", "options": ["3 years", "4 years", "5 years", "6 years"], "answer": 2}, {"batch": 2, "q": "The main function of the Finance Commission is to recommend:", "options": ["Distribution of financial resources between Union and States", "Appointment of Governors", "Election schedules", "Judicial appointments"], "answer": 0}, {"batch": 3, "q": "The idea of a Federal system with a strong Centre was borrowed from:", "options": ["USA", "Canada", "Australia", "Japan"], "answer": 1}, {"batch": 3, "q": "The Preamble to the Indian Constitution was amended by which Constitutional Amendment Act?", "options": ["24th Amendment", "42nd Amendment", "44th Amendment", "52nd Amendment"], "answer": 1}, {"batch": 3, "q": "Which words were added to the Preamble by the 42nd Amendment Act, 1976?", "options": ["Sovereign, Democratic, Republic", "Socialist, Secular, Integrity", "Justice, Liberty, Equality", "Republic, Fraternity"], "answer": 1}, {"batch": 3, "q": "The Preamble declares India to be a:", "options": ["Sovereign Socialist Secular Democratic Republic", "Sovereign Communist Republic", "Federal Monarchy", "Unitary Democratic State"], "answer": 0}, {"batch": 3, "q": "According to the Preamble, the source of authority of the Constitution is:", "options": ["The Parliament", "The President", "The People of India", "The Supreme Court"], "answer": 2}, {"batch": 3, "q": "Which of the following is NOT one of the objectives mentioned in the Preamble?", "options": ["Justice", "Liberty", "Equality", "Reservation"], "answer": 3}, {"batch": 3, "q": "Which of the following is NOT one of the freedoms guaranteed under Article 19?", "options": ["Freedom of speech and expression", "Freedom to assemble peaceably", "Freedom to practise any profession", "Right to property as a fundamental right"], "answer": 3}, {"batch": 3, "q": "Article 20 of the Constitution provides protection in respect of:", "options": ["Conviction for offences", "Life and personal liberty", "Arrest and detention", "Education"], "answer": 0}, {"batch": 3, "q": "Article 20 embodies the principle against:", "options": ["Ex post facto laws, double jeopardy, and self-incrimination", "Untouchability", "Child labour", "Forced labour"], "answer": 0}, {"batch": 3, "q": "Article 21 of the Constitution guarantees:", "options": ["Protection of life and personal liberty", "Right against exploitation", "Right to religion", "Right to constitutional remedies"], "answer": 0}, {"batch": 3, "q": "Article 21A, inserted by the 86th Amendment, guarantees:", "options": ["Right to free and compulsory education for children aged 6 to 14 years", "Right to vote", "Right to work", "Right to free higher education"], "answer": 0}, {"batch": 3, "q": "Article 22 of the Constitution provides protection against:", "options": ["Arrest and detention in certain cases", "Untouchability", "Forced labour", "Trafficking in human beings"], "answer": 0}, {"batch": 3, "q": "The Prime Minister acts as the principal channel of communication between:", "options": ["The President and the Council of Ministers", "The Judiciary and Legislature", "State Governors and the President", "Parliament and the Election Commission"], "answer": 0}, {"batch": 3, "q": "Who is the highest law officer of the Government of India?", "options": ["Solicitor General", "Attorney General for India", "Advocate General", "Chief Justice of India"], "answer": 1}, {"batch": 3, "q": "The Attorney General of India is appointed under which Article?", "options": ["Article 76", "Article 124", "Article 165", "Article 143"], "answer": 0}, {"batch": 3, "q": "The Attorney General holds office:", "options": ["During the pleasure of the President", "For a fixed term of 5 years", "For a fixed term of 6 years", "Until age 65"], "answer": 0}, {"batch": 3, "q": "The functions of the Attorney General include:", "options": ["Giving legal advice to the Government of India", "Presiding over Lok Sabha", "Appointing judges", "Chairing the Election Commission"], "answer": 0}, {"batch": 3, "q": "The Indian Parliament consists of the President and which two Houses?", "options": ["Lok Sabha and Rajya Sabha", "Vidhan Sabha and Vidhan Parishad", "Senate and House of Representatives", "Lower House and Upper House only, without President"], "answer": 0}, {"batch": 3, "q": "Delhi, officially the National Capital Territory, has a special status under which Article?", "options": ["Article 239AA", "Article 370", "Article 371", "Article 1"], "answer": 0}, {"batch": 3, "q": "The State Legislature may consist of the Governor and one or two Houses, being the:", "options": ["Legislative Assembly and Legislative Council", "Lok Sabha and Rajya Sabha", "Senate and Assembly", "Parliament and Council"], "answer": 0}, {"batch": 3, "q": "The Legislative Assembly of a State is also known as the:", "options": ["Vidhan Sabha", "Vidhan Parishad", "Rajya Sabha", "Lok Sabha"], "answer": 0}, {"batch": 3, "q": "The Legislative Council of a State, where it exists, is also known as the:", "options": ["Vidhan Sabha", "Vidhan Parishad", "Lok Sabha", "Municipal Council"], "answer": 1}, {"batch": 3, "q": "The minimum age to be a member of the Legislative Assembly is:", "options": ["21 years", "25 years", "30 years", "35 years"], "answer": 1}, {"batch": 3, "q": "The minimum age to be a member of the Legislative Council is:", "options": ["25 years", "30 years", "35 years", "40 years"], "answer": 1}, {"batch": 3, "q": "Disputes relating to inter-state river waters are dealt with under which Article?", "options": ["Article 262", "Article 263", "Article 280", "Article 300"], "answer": 0}, {"batch": 3, "q": "Emergency provisions in the Indian Constitution are contained in which Part?", "options": ["Part XVII", "Part XVIII", "Part XIX", "Part XX"], "answer": 1}, {"batch": 3, "q": "How many types of emergencies are provided for in the Indian Constitution?", "options": ["Two", "Three", "Four", "Five"], "answer": 1}, {"batch": 3, "q": "National Emergency on grounds of war, external aggression or armed rebellion is provided under which Article?", "options": ["Article 352", "Article 356", "Article 360", "Article 368"], "answer": 0}, {"batch": 3, "q": "The term 'armed rebellion' replaced 'internal disturbance' in Article 352 by which Amendment?", "options": ["42nd Amendment", "44th Amendment", "24th Amendment", "52nd Amendment"], "answer": 1}, {"batch": 3, "q": "President's Rule in a State due to failure of constitutional machinery is imposed under which Article?", "options": ["Article 352", "Article 356", "Article 360", "Article 280"], "answer": 1}, {"batch": 4, "q": "The Preamble provides for Justice in which forms?", "options": ["Social, Economic and Political", "Only Social", "Only Economic", "Only Political"], "answer": 0}, {"batch": 4, "q": "The territory of India, as per Article 1, consists of the territories of States, Union Territories, and:", "options": ["Foreign enclaves only", "Territories that may be acquired", "Only princely states", "None of the above"], "answer": 1}, {"batch": 4, "q": "Article 1 of the Constitution declares India, that is Bharat, to be a:", "options": ["Union of States", "Federation of States", "Confederation", "Unitary State"], "answer": 0}, {"batch": 4, "q": "New States can be admitted or established into the Union of India under which Article?", "options": ["Article 1", "Article 2", "Article 3", "Article 4"], "answer": 1}, {"batch": 4, "q": "Parliament's power to form new States, alter boundaries or names of existing States is given under:", "options": ["Article 1", "Article 2", "Article 3", "Article 5"], "answer": 2}, {"batch": 4, "q": "Who initiates a Bill under Article 3 for altering the area, boundaries, or name of a State?", "options": ["Any Member of Parliament", "Only with prior recommendation of the President", "State Legislature", "Supreme Court"], "answer": 1}, {"batch": 4, "q": "The Right against Exploitation is guaranteed under which Articles?", "options": ["Articles 23 and 24", "Articles 25 and 26", "Articles 29 and 30", "Articles 32 and 33"], "answer": 0}, {"batch": 4, "q": "Article 23 of the Constitution prohibits:", "options": ["Traffic in human beings and forced labour (begar)", "Untouchability", "Discrimination on grounds of religion", "Employment of children in factories"], "answer": 0}, {"batch": 4, "q": "Article 24 of the Constitution prohibits:", "options": ["Employment of children below 14 years in hazardous occupations", "Forced labour of adults", "Discrimination in public employment", "Untouchability"], "answer": 0}, {"batch": 4, "q": "The Right to Freedom of Religion is guaranteed under which Articles?", "options": ["Articles 25 to 28", "Articles 29 to 30", "Articles 19 to 22", "Articles 14 to 18"], "answer": 0}, {"batch": 4, "q": "Article 25 of the Constitution guarantees:", "options": ["Freedom of conscience and free profession, practice and propagation of religion", "Freedom to manage religious affairs", "Freedom from payment of taxes for promotion of religion", "Freedom of religious instruction"], "answer": 0}, {"batch": 4, "q": "Article 26 of the Constitution deals with:", "options": ["Freedom to manage religious affairs", "Freedom of conscience", "Freedom from taxes for religion", "Right to education"], "answer": 0}, {"batch": 4, "q": "The Rajya Sabha is also known as the:", "options": ["Council of States", "House of the People", "Lower House", "State Assembly"], "answer": 0}, {"batch": 4, "q": "The Lok Sabha is also known as the:", "options": ["Council of States", "House of the People", "Upper House", "State Council"], "answer": 1}, {"batch": 4, "q": "The Rajya Sabha is a:", "options": ["Permanent House, not subject to dissolution", "Temporary House dissolved every 5 years", "House with no fixed members", "House dissolved with Lok Sabha"], "answer": 0}, {"batch": 4, "q": "What is the maximum strength of the Rajya Sabha as per the Constitution?", "options": ["238 elected + 12 nominated = 250", "500 members", "545 members", "300 members"], "answer": 0}, {"batch": 4, "q": "Members of the Rajya Sabha nominated by the President are chosen for special knowledge in fields such as:", "options": ["Literature, science, art and social service", "Sports only", "Business only", "Military affairs only"], "answer": 0}, {"batch": 4, "q": "What is the normal term of the Lok Sabha unless dissolved earlier?", "options": ["4 years", "5 years", "6 years", "7 years"], "answer": 1}, {"batch": 4, "q": "Members of the Legislative Assembly are elected by:", "options": ["Direct election by the people of the State", "The Legislative Council", "The Governor", "The Parliament"], "answer": 0}, {"batch": 4, "q": "The normal term of a State Legislative Assembly is:", "options": ["4 years", "5 years", "6 years", "7 years"], "answer": 1}, {"batch": 4, "q": "A member of the State Legislature is disqualified if they hold an office of profit under the government, are of unsound mind, or:", "options": ["Are an undischarged insolvent or not a citizen of India", "Have less than a graduate degree", "Belong to more than one political party", "Are above 60 years of age"], "answer": 0}, {"batch": 4, "q": "The functions of the State Legislature include law-making on State List subjects and:", "options": ["Control over the State finances and executive", "Appointing High Court judges", "Declaring war", "Issuing currency"], "answer": 0}, {"batch": 4, "q": "A State Legislative Council can be created or abolished by Parliament under which Article?", "options": ["Article 169", "Article 168", "Article 356", "Article 3"], "answer": 0}, {"batch": 4, "q": "The High Court for a State is established under which Article?", "options": ["Article 214", "Article 226", "Article 124", "Article 32"], "answer": 0}, {"batch": 4, "q": "Financial Emergency is provided for under which Article?", "options": ["Article 352", "Article 356", "Article 360", "Article 368"], "answer": 2}, {"batch": 4, "q": "Has a Financial Emergency ever been proclaimed in India?", "options": ["Yes, several times", "No, it has never been proclaimed", "Only once, in 1975", "Only during British rule"], "answer": 1}, {"batch": 4, "q": "Freedom of trade, commerce and intercourse throughout the territory of India is guaranteed under which Article?", "options": ["Article 301", "Article 19", "Article 14", "Article 32"], "answer": 0}, {"batch": 4, "q": "The Comptroller and Auditor General (CAG) of India is appointed under which Article?", "options": ["Article 148", "Article 143", "Article 165", "Article 76"], "answer": 0}, {"batch": 4, "q": "The CAG audits the accounts of:", "options": ["The Union and State Governments", "Only private companies", "Only the Judiciary", "Only Panchayats"], "answer": 0}, {"batch": 4, "q": "The CAG is often described as the guardian of:", "options": ["The public purse / public finance", "The judiciary", "Fundamental Rights", "Foreign policy"], "answer": 0}, {"batch": 5, "q": "Citizenship in India is dealt with under which Part of the Constitution?", "options": ["Part I", "Part II", "Part III", "Part IV"], "answer": 1}, {"batch": 5, "q": "Citizenship provisions in the Constitution are covered under which Articles?", "options": ["Articles 5 to 11", "Articles 12 to 35", "Articles 36 to 51", "Articles 52 to 78"], "answer": 0}, {"batch": 5, "q": "Which Act regulates the acquisition and termination of Indian citizenship?", "options": ["The Citizenship Act, 1955", "The Registration Act, 1908", "The Passport Act, 1967", "The Foreigners Act, 1946"], "answer": 0}, {"batch": 5, "q": "Under the Citizenship Act, citizenship can be acquired by all of the following EXCEPT:", "options": ["Birth", "Descent", "Registration", "Royal decree"], "answer": 3}, {"batch": 5, "q": "Citizenship by naturalisation is granted to a foreigner who:", "options": ["Is born in India", "Applies and fulfils prescribed conditions of residence, etc.", "Marries an Indian without any conditions", "Is a descendant of an Indian"], "answer": 1}, {"batch": 5, "q": "Indian citizenship can be terminated by all of the following modes EXCEPT:", "options": ["Renunciation", "Termination", "Deprivation", "Inheritance"], "answer": 3}, {"batch": 5, "q": "Article 27 of the Constitution provides:", "options": ["Freedom from payment of taxes for promotion of any particular religion", "Freedom to propagate religion", "Freedom to manage religious institutions", "Right to religious education"], "answer": 0}, {"batch": 5, "q": "Article 28 deals with freedom regarding:", "options": ["Attendance at religious instruction in certain educational institutions", "Practice of religion at home", "Formation of religious associations", "Conversion to another religion"], "answer": 0}, {"batch": 5, "q": "Cultural and Educational Rights are guaranteed under which Articles?", "options": ["Articles 29 and 30", "Articles 25 and 26", "Articles 14 and 15", "Articles 32 and 226"], "answer": 0}, {"batch": 5, "q": "Article 29 of the Constitution protects:", "options": ["The interests of minorities to conserve their distinct language, script or culture", "Right of minorities to establish educational institutions", "Right to free speech", "Right against exploitation"], "answer": 0}, {"batch": 5, "q": "Article 30 of the Constitution grants minorities the right to:", "options": ["Establish and administer educational institutions of their choice", "Conserve their language and culture", "Freedom of religion", "Equality before law"], "answer": 0}, {"batch": 5, "q": "The Right to Constitutional Remedies is provided under which Article?", "options": ["Article 30", "Article 32", "Article 19", "Article 226"], "answer": 1}, {"batch": 5, "q": "The minimum age to be a member of the Lok Sabha is:", "options": ["21 years", "25 years", "30 years", "35 years"], "answer": 1}, {"batch": 5, "q": "The minimum age to be a member of the Rajya Sabha is:", "options": ["25 years", "30 years", "35 years", "40 years"], "answer": 1}, {"batch": 5, "q": "Members of the Rajya Sabha are elected by:", "options": ["Direct election by the people", "Elected members of State Legislative Assemblies", "The President", "The Prime Minister"], "answer": 1}, {"batch": 5, "q": "Members of the Lok Sabha are elected by:", "options": ["Direct election on the basis of adult suffrage", "State Legislative Assemblies", "Indirect election by Rajya Sabha", "Nomination by the President"], "answer": 0}, {"batch": 5, "q": "A person is disqualified from being a member of Parliament if they hold an office of profit, are of unsound mind, or are:", "options": ["An undischarged insolvent or not a citizen of India", "A graduate", "Below 60 years of age", "A government employee on leave"], "answer": 0}, {"batch": 5, "q": "Which of the following is a function of Parliament?", "options": ["Law-making, control over finance, and ensuring executive accountability", "Deciding civil disputes between citizens", "Appointing High Court judges directly", "Issuing currency notes"], "answer": 0}, {"batch": 5, "q": "The judges of a High Court are appointed by:", "options": ["The President", "The Governor", "The Chief Minister", "The Chief Justice of India alone"], "answer": 0}, {"batch": 5, "q": "A High Court's writ jurisdiction for enforcement of Fundamental Rights and for any other purpose is given under which Article?", "options": ["Article 226", "Article 32", "Article 141", "Article 143"], "answer": 0}, {"batch": 5, "q": "The High Court's jurisdiction under Article 226 is:", "options": ["Narrower than the Supreme Court's Article 32 jurisdiction", "Wider than the Supreme Court's Article 32 jurisdiction, covering other purposes too", "Restricted only to criminal matters", "Restricted only to civil matters"], "answer": 1}, {"batch": 5, "q": "One High Court can have jurisdiction over more than one State/Union Territory; for example, the Punjab and Haryana High Court is:", "options": ["A common High Court for two States", "A High Court only for Punjab", "A High Court only for Haryana", "Not permitted under the Constitution"], "answer": 0}, {"batch": 5, "q": "Appeals from High Court decisions ordinarily lie to the:", "options": ["Supreme Court of India", "President of India", "Parliament", "Governor"], "answer": 0}, {"batch": 5, "q": "The High Court has superintendence over all courts and tribunals within its territorial jurisdiction under which Article?", "options": ["Article 227", "Article 226", "Article 141", "Article 32"], "answer": 0}, {"batch": 5, "q": "The Union Public Service Commission conducts examinations for recruitment to:", "options": ["All India Services and Central Services", "State services only", "Panchayat elections", "Municipal appointments"], "answer": 0}, {"batch": 5, "q": "Provisions relating to Public Service Commissions are given under which Part of the Constitution?", "options": ["Part XIV", "Part XIII", "Part XII", "Part XI"], "answer": 0}, {"batch": 5, "q": "Administrative Tribunals were introduced by which Constitutional Amendment?", "options": ["42nd Amendment Act, 1976", "44th Amendment Act, 1978", "24th Amendment Act, 1971", "52nd Amendment Act, 1985"], "answer": 0}, {"batch": 5, "q": "Administrative Tribunals adjudicate disputes relating to:", "options": ["Recruitment and conditions of service of public servants", "Family disputes", "Criminal offences", "Election disputes only"], "answer": 0}, {"batch": 5, "q": "The official language of the Union, as per Article 343, is:", "options": ["Hindi in Devanagari script, with English continuing for official purposes as provided by law", "English only", "Sanskrit", "Tamil"], "answer": 0}, {"batch": 5, "q": "Provisions relating to official language are given under which Part of the Constitution?", "options": ["Part XVII", "Part XVIII", "Part XV", "Part XIV"], "answer": 0}];
+
+let quiz = [];
+let current = 0;
+let answers = [];
+let mode = "";
+let lastBatch = null;
+
+function shuffle(arr){
+  const a = [...arr];
+  for(let i=a.length-1;i>0;i--){
+    const j=Math.floor(Math.random()*(i+1));
+    [a[i],a[j]]=[a[j],a[i]];
+  }
+  return a;
+}
+
+function hideAll(){
+  ["home","batches","quiz","result"].forEach(id=>document.getElementById(id).classList.add("hidden"));
+}
+function goHome(){ hideAll(); document.getElementById("home").classList.remove("hidden"); }
+function showBatches(){ hideAll(); document.getElementById("batches").classList.remove("hidden"); }
+
+function startBatch(batch){
+  lastBatch = batch;
+  mode = "Batch " + batch;
+  quiz = BANK.filter(x=>x.batch===batch);
+  begin();
+}
+
+function startOverall(){
+  lastBatch = null;
+  mode = "Overall Mock";
+  quiz = shuffle(BANK).slice(0,50);
+  begin();
+}
+
+function begin(){
+  current=0;
+  answers=new Array(quiz.length).fill(null);
+  hideAll();
+  document.getElementById("quiz").classList.remove("hidden");
+  document.getElementById("modeTitle").textContent=mode;
+  render();
+}
+
+function render(){
+  const item=quiz[current];
+  document.getElementById("counter").textContent=`Question ${current+1} of ${quiz.length}`;
+  document.getElementById("qnum").textContent=`Question ${current+1}`;
+  document.getElementById("question").textContent=item.q;
+  document.getElementById("progress").style.width=((current+1)/quiz.length*100)+"%";
+  document.getElementById("prevBtn").disabled=current===0;
+  document.getElementById("nextBtn").textContent=current===quiz.length-1?"Finish →":"Next →";
+  document.getElementById("scoreLive").textContent=`${answers.filter((a,i)=>a!==null && a===quiz[i].answer).length} correct`;
+
+  const options=document.getElementById("options");
+  options.innerHTML="";
+  item.options.forEach((text,i)=>{
+    const btn=document.createElement("button");
+    btn.className="option";
+    btn.disabled=answers[current]!==null;
+    if(answers[current]!==null){
+      if(i===answers[current] && i===item.answer) btn.classList.add("selected-correct");
+      if(i===answers[current] && i!==item.answer) btn.classList.add("selected-wrong");
+      if(i===item.answer) btn.classList.add("reveal-correct");
+    }
+    btn.innerHTML=`<span class="letter">${String.fromCharCode(65+i)}</span><span>${escapeHtml(text)}</span>`;
+    btn.onclick=()=>choose(i);
+    options.appendChild(btn);
+  });
+
+  const fb=document.getElementById("feedback");
+  fb.innerHTML="";
+  if(answers[current]!==null){
+    const correct=answers[current]===item.answer;
+    fb.className="feedback "+(correct?"good":"bad");
+    fb.innerHTML=correct
+      ? `<strong>Correct.</strong> The answer is ${String.fromCharCode(65+item.answer)} — ${escapeHtml(item.options[item.answer])}.`
+      : `<strong>Incorrect.</strong> The correct answer is ${String.fromCharCode(65+item.answer)} — ${escapeHtml(item.options[item.answer])}.`;
+  }else{
+    fb.className="";
+  }
+}
+
+function choose(index){
+  if(answers[current]!==null) return;
+  answers[current]=index;
+  render();
+}
+function nextQuestion(){
+  if(current<quiz.length-1){current++;render();}
+  else finish();
+}
+function prevQuestion(){if(current>0){current--;render();}}
+
+function finish(){
+  hideAll();
+  document.getElementById("result").classList.remove("hidden");
+  const correct=answers.reduce((n,a,i)=>n+(a!==null&&a===quiz[i].answer?1:0),0);
+  const wrong=answers.reduce((n,a,i)=>n+(a!==null&&a!==quiz[i].answer?1:0),0);
+  const skipped=answers.filter(a=>a===null).length;
+  document.getElementById("finalScore").textContent=`${correct}/${quiz.length}`;
+  document.getElementById("correctCount").textContent=correct;
+  document.getElementById("wrongCount").textContent=wrong;
+  document.getElementById("skipCount").textContent=skipped;
+  document.getElementById("totalCount").textContent=quiz.length;
+  const pct=Math.round(correct/quiz.length*100);
+  document.getElementById("resultTitle").textContent=pct>=90?"Excellent":pct>=75?"Strong score":pct>=60?"Needs another revision":"Revise the weak areas";
+  document.getElementById("resultText").textContent=`You scored ${pct}%. Answers were revealed immediately during the test.`;
+}
+function restartSame(){
+  if(lastBatch) startBatch(lastBatch);
+  else startOverall();
+}
+function escapeHtml(s){
+  return s.replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[m]));
+}
+</script>
+</body>
+</html>
